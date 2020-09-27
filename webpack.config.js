@@ -27,6 +27,9 @@ const config={
             {
                 test: /\.vue$/,//检测文件类型
                 loader: 'vue-loader'//webpack就有vue-loader来为webpack处理.vue文件类型
+            },{
+                test: /\.jsx$/,//检测文件类型
+                loader: 'babel-loader'//webpack就有vue-loader来为webpack处理.vue文件类型
             },{//这里也得写上③
                 test:/\.css$/,
                 use: ['style-loader', 'css-loader']
@@ -45,6 +48,12 @@ const config={
                 test: /\.styl/,
                 use: [
                     'css-loader',
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            sourceMap: true
+                        }
+                    },
                     'stylus-loader'
                 ]
             },{
