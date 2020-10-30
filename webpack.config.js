@@ -47,6 +47,7 @@ const config={
             },{//CSS预处理器
                 test: /\.styl/,
                 use: [
+                    'style-loader',
                     'css-loader',
                     {
                         loader: 'postcss-loader',
