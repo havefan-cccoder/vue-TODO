@@ -16,7 +16,7 @@ const config={
     plugins:[
         new webpack.DefinePlugin({
             'process.env': {
-                NODE_ENV:isDev ? '"development"' : '"production'//注意这里必须不能落下引号们
+                NODE_ENV:isDev ? '"development"' : '"production"'//注意这里必须不能落下引号们
             }
         }),
         new VueLoaderPlugin(),//vue-loader是 15之后的版本，需要这里②
