@@ -6,27 +6,76 @@
             autofocus="autofocus"
             placeholder="接下来要去做什么"
             @keyup.enter="addTodo">
-            <Item :todo="todo"></Item>
-            <tabs :filter="filter"></tabs>
+            <Item 
+            v-for="todo in filterCompleted"
+            :key="todo.id"
+            :todo="todo" 
+            @del="deleteTodo"/><!--不能随便加括号，不然拿不到值why-->
+            <tabs 
+                :filter="filter" 
+                :todos=todos 
+                @toggle='toggleFilter'
+                @clearAll='clearAllcompleted'
+            />
     </section>
 </template>
 <script>
 import Item from './item.vue'
 import Tabs from './tabs.vue'
+let id = 0
 export default {
     data() {
         return {
-            todo: {
-                id:0,
-                content: 'this is todo',
-                completed: false
-            },
+            todos:[],
             filter: 'all'
         }
     },
     components:{Item, Tabs},
+    computed: {
+        filterCompleted(){
+            if (this.filter == 'all') {
+                return this.todos
+            } 
+            const completedFlag = this.filter === 'completed'
+            return this.todos.filter(todo => todo.completed === completedFlag)
+
+            //这段代码要是我写估计得下面这样子……
+            // switch (this.filter) {
+            //     case 'all':
+            //         return this.todos
+            //         break;
+            //     case 'completed':
+            //         return this.todos.filter(todo => todo.completed === true)
+            //         break;
+            //     case 'active':
+            //         return this.todos.filter(todo => todo.completed === false)
+            //         break;
+            
+            //     default:
+            //         break;
+            // }
+        }
+    },
     methods: {
-        addTodo() {}
+        addTodo(e) {
+            this.todos.unshift({
+                id: id++,
+                content: e.target.value.trim(),
+                completed: false
+            })
+            e.target.value = ''
+        },
+        deleteTodo(_id){
+            this.todos.splice(this.todos.findIndex(todo => todo.id === _id), 1)
+        },
+        toggleFilter(state){
+            this.filter = state
+        },
+        clearAllcompleted(){
+            this.todos = this.todos.filter(todo => !todo.completed)
+            //我是这么写的……
+            // this.todos = this.todos.filter(todo => todo.completed === false)
+        }
     }
 }
 </script>
